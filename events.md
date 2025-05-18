@@ -119,9 +119,9 @@ This function is essentially a spawn trigger that you can force clients to spawn
 - **`AccountID`** (`number`)
 The Account ID of the user to send the data to.
 - **`Spawn`** (`SpawnInfo`) 
-[SpawnInfo]() contains all of the data that will be sent to a ghost **Spawn Trigger** that the client runs. See how to use it [here]().
+[SpawnInfo](/SpawnInfo.md) contains all of the data that will be sent to a ghost **Spawn Trigger** that the client runs. See how to use it [here](/SpawnInfo.md).
 - **`Item`** (`ItemInfo`) 
-[ItemInfo]() contains all of the data that will be sent to a ghost **Item Edit** trigger that the client runs. See how to use it [here]().
+[ItemInfo](/SpawnInfo.md) contains all of the data that will be sent to a ghost **Item Edit** trigger that the client runs. See how to use it [here](/SpawnInfo.md).
 
 This is code that would spawn a random group from 10 to 20
 ```lua
@@ -155,9 +155,9 @@ This function is essentially a spawn trigger that you can force every client in 
 #### Parameters
 
 - **`Spawn`** (`SpawnInfo`) 
-[SpawnInfo]() contains all of the data that will be sent to a ghost **Spawn Trigger** that the client runs. See how to use it [here]().
+[SpawnInfo](/SpawnInfo.md) contains all of the data that will be sent to a ghost **Spawn Trigger** that the client runs. See how to use it [here](/SpawnInfo.md).
 - **`Item`** (`ItemInfo`) 
-[ItemInfo]() contains all of the data that will be sent to a ghost **Item Edit** trigger that the client runs. See how to use it [here]().
+[ItemInfo](/SpawnInfo.md) contains all of the data that will be sent to a ghost **Item Edit** trigger that the client runs. See how to use it [here](/SpawnInfo.md).
 
 The following is code that would tell all players that a game is starting.
 
