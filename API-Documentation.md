@@ -9,7 +9,7 @@ print(#GAME.Players) -- output: 2
 -- The # gets the length of a list
 ```
 
-If you would like to see everything in the 'GAME' variable, go [here](). Otherwise, here is a list of common parameters.
+If you would like to see everything in the 'GAME' variable, go [here](https://github.com/stellarxoxo/nobodywillreadthis/blob/main/game.md). Otherwise, here is a list of common parameters.
 
 ## Common Parameters
 
@@ -19,4 +19,4 @@ If you would like to see everything in the 'GAME' variable, go [here](). Otherwi
 
 ## Events and Communication
 
-If you would like to see a full list of events provided to you by Globed, go [here](/events.md). This link also has the documentation on client-server communication.
+If you would like to see a full list of events provided to you by Globed, go [here](https://github.com/stellarxoxo/nobodywillreadthis/blob/main/events.md). This link also has the documentation on client-server communication.
