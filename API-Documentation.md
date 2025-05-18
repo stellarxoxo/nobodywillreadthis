@@ -9,13 +9,7 @@ print(#GAME.Players) -- output: 2
 -- The # gets the length of a list
 ```
 
-If you would like to see everything in the 'GAME' variable, go [here](https://github.com/stellarxoxo/nobodywillreadthis/blob/main/game.md). Otherwise, here is a list of common parameters.
-
-## Common Parameters
-
-
-
-#### See the rest of the list [here](/game.md)
+If you would like to see everything in the 'GAME' variable, go [here](https://github.com/stellarxoxo/nobodywillreadthis/blob/main/game.md). 
 
 ## Events and Communication
 
