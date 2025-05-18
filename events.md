@@ -79,95 +79,85 @@ server_callback("Heartbeat", my_heartbeat)
 
 ## Client To Server Communication
 
-To communicate from the client to the server, you use the `FireServer` function on the client side, and then listen for those events on the server side using the same event name.
+To communicate from the client to the server, you use the `FireServer` trigger inside of the GD editor, and then listen for those events on the server side using the same event name.
 
+![a](/fireserver1.png)
 
-### `FireServer`
-Send a custom event to the server. This only works on the client-side.
+- **ItemID:** This is the data that will be sent to the server. You can send up to two pieces of data per FireServer spawn. If you would like to send a constant you can leave the ItemID value as 0 and use the Mod1 value (much like the vanilla Item Triggers.)
 
-#### Parameters
+- **Mod1:** This is a multiplier to the ItemID value. This works identically to the Item Edit/Item Compare trigger in vanilla GD.
 
-- **`EventName`** (`string`)
-The name of the event that the server will listen for
-- **`Data`** (`any`)
-The data sent to the server. **The server will automatically have the Account ID of the user who sends the event.**
+- **Event Name**: This is the name of the event the server will be listening to. The event name can be used by multiple `Fire Server` triggers. Note that you cannot use the following names as your event name:
+    - PlayerJoin
+    - PlayerLeave
+    - Heartbeat
 
-Example code:
-```lua
--- Client-side code
+On the server side you can use the same event name to detect this like so:
 
-FireServer("MyCustomEvent", 12) -- 12 is just for demonstration
-```
-
-Then, on the server you can use the same event name to detect this.
-
-Example code:
 ```lua
 -- Server-side code
 
-local function my_function(account_id, data)
-    print("Recieved data " .. data) -- prints "12"
+local function my_event_hook(account_id, data1, data2)
+    print("Recieved data " .. data)
 end
 
-server_callback("MyCustomEvent", my_function)
+server_callback("MyEvent", my_event_hook)
 -- Notice how the first argument uses the same event name as the client-side code
 ```
+
+**The account ID of the client sending the FireServer request is automatically in the data that the server recieves.**
 
 ## Server To Client Communication
 
 There are 2 ways to communicate with client(s) from the server, being `FireClient` and `FireAllClients`
 
 ### `FireClient`
-Send a custom event to the client. This only works server-side.
+This function is essentially a spawn trigger that you can force clients to spawn.
 
 #### Parameters
 
 - **`AccountID`** (`number`)
 The Account ID of the user to send the data to.
-- **`EventName`** (`string`)
-The name of the event that the client will listen for
-- **`Data`** (`any`)
-The data sent to the client.
+- **`Spawn`** (`SpawnInfo`) 
+[SpawnInfo]() contains all of the data that will be sent to a ghost **Spawn Trigger** that the client runs. See how to use it [here]().
+- **`Item`** (`ItemInfo`) 
+[ItemInfo]() contains all of the data that will be sent to a ghost **Item Edit** trigger that the client runs. See how to use it [here]().
 
-This is code that would generate a random number and comunicate it to a random player. The player would then print it out on their client.
+This is code that would spawn a random group from 10 to 20
 ```lua
 -- Server-side code
 
 local function send_rng()
     -- Get the account ID of a random player in the lobby
-    local random_account_id = GAME.Players[math.random(#GAME.Players).AccountID
+    local random_account_id = GAME.Players[math.random(#GAME.Players)].AccountID
 
-    -- Generate a random number between 1 - 10
-    number = math.random(10)
+    -- Generate a random number between 11 - 20
+    spawn_group = math.random(10) + 10
 
-    -- Communicate it to the chosen player.
-    FireClient(random_account_id, "RNG", number)
+    -- Creaate SpawnInfo and spawn that group on the chosen player's client
+    local spawn_info = SpawnInfo.new(
+        spawn_group,    -- GroupID
+        0.0,            -- Delay
+        0.0,            -- DelayRandomness
+        false,          -- SpawnOrdered
+        nil             -- Remaps
+    )
+
+    FireClient(random_account_id, spawn_info)
 end
-```
-
-To detect it on the client side, you must use the **`client_callback`** function insted of `server_callback`. Here is code that would detect the number from the server's `send_rng` function.
-```lua
--- Client-side code
-
-local function recieve_rng(number)
-    print("Recieved value " .. number .. " from server.")
-end
-
-client_callback("RNG", recieve_rng)
 ```
 
 If you would like to send some data to all clients, you can use the `FireAllClients` function.
 
-
 ### `FireAllClients`
-Send a custom event to every connected client. This only works server-side.
+This function is essentially a spawn trigger that you can force every client in the lobby to spawn.
 
 #### Parameters
 
-- **`EventName`** (`string`)
-The name of the event that the client will listen for
-- **`Data`** (`any`)
-The data sent to the client.
+- **`Spawn`** (`SpawnInfo`) 
+[SpawnInfo]() contains all of the data that will be sent to a ghost **Spawn Trigger** that the client runs. See how to use it [here]().
+- **`Item`** (`ItemInfo`) 
+[ItemInfo]() contains all of the data that will be sent to a ghost **Item Edit** trigger that the client runs. See how to use it [here]().
 
 The following is code that would tell all players that a game is starting.
 
@@ -175,19 +165,15 @@ The following is code that would tell all players that a game is starting.
 -- Server-side code
 
 local function start_game()
-    FireAllClients("StartGame") -- no second parameter needed
+    -- Create SpawnInfo that will be communicated to clients. Assume group 87 is the start game group in GD.
+    local spawn_info = SpawnInfo.new(
+        87,             -- GroupID
+        0.0,            -- Delay
+        0.0,            -- DelayRandomness
+        false,          -- SpawnOrdered
+        nil             -- Remaps
+    )
+
+    FireAllClients(spawn_info) -- No account ID's aneeded
 end
-```
-
-The clientside code to detect this would look like this:
-
-```lua
--- Client-side code
-
-local function clientside_start_game()
-    -- do things to start the game here..
-    return
-end
-
-client_callback("StartGame", clientside_start_game)
 ```
